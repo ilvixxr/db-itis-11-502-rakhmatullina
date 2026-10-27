@@ -15,6 +15,8 @@ SELECT
     MAX(price) AS max_price
 FROM membership;
 ```
+<img width="606" height="66" alt="" src="https://github.com/user-attachments/assets/a22d78bd-3da2-4925-ae91-249011378f70" />
+
 
 ### 1.2. Агрегаты с группировкой по способу оплаты
 
@@ -32,6 +34,7 @@ FROM payment
 GROUP BY method
 ORDER BY total_amount DESC;
 ```
+<img width="768" height="93" alt="" src="https://github.com/user-attachments/assets/621c1613-bf30-4e8c-b34a-3186cba4d0fc" />
 
 ## 2. STRING_AGG()
 
@@ -44,6 +47,7 @@ SELECT
     STRING_AGG(first_name || ' ' || last_name, ', ' ORDER BY last_name) AS all_clients
 FROM client;
 ```
+<img width="548" height="70" alt="" src="https://github.com/user-attachments/assets/aef166e2-f5ab-47ba-8cb0-9cf44c9f5a1e" />
 
 ### 2.2. Уникальные специализации тренеров
 
@@ -54,6 +58,8 @@ SELECT
     STRING_AGG(DISTINCT specialization, ', ' ORDER BY specialization) AS all_specializations
 FROM trainer;
 ```
+<img width="344" height="67" alt="" src="https://github.com/user-attachments/assets/6c373528-92fc-4502-a7bc-497d569bc966" />
+
 
 ## 3. GROUP BY
 
@@ -70,6 +76,8 @@ FROM membership
 GROUP BY type
 ORDER BY count_memberships DESC;
 ```
+<img width="420" height="119" alt="" src="https://github.com/user-attachments/assets/495e532d-a3a0-416b-8d4d-29ed3e18d846" />
+
 
 ### 3.2. Платежи по способам оплаты
 
@@ -85,6 +93,8 @@ FROM payment
 GROUP BY method
 ORDER BY total_amount DESC;
 ```
+<img width="567" height="100" alt="" src="https://github.com/user-attachments/assets/9c7e79f8-35f1-4df2-8cd0-9d5a2ca41d4b" />
+
 
 ## 4. HAVING
 
@@ -102,6 +112,8 @@ GROUP BY type
 HAVING SUM(price) > 10000
 ORDER BY total_price DESC;
 ```
+<img width="423" height="124" alt="" src="https://github.com/user-attachments/assets/fed733be-bd62-4cbe-8c3e-e958d14a1723" />
+
 
 ### 4.2. Клиенты с 2 и более абонементами
 
@@ -119,6 +131,8 @@ GROUP BY c.client_id, c.first_name, c.last_name
 HAVING COUNT(m.membership_id) >= 2
 ORDER BY membership_count DESC;
 ```
+<img width="570" height="95" alt="" src="https://github.com/user-attachments/assets/e4661582-383e-4416-bc11-db8d47f3cf90" />
+
 
 ## 5. GROUPING SETS
 
@@ -135,6 +149,8 @@ FROM payment
 GROUP BY GROUPING SETS ((method), (client_id))
 ORDER BY method NULLS LAST, client_id NULLS LAST;
 ```
+<img width="376" height="222" alt="" src="https://github.com/user-attachments/assets/b14646f2-3c57-4cd3-a41d-2f207bd4fd14" />
+
 
 ### 5.2. Посещения по тренировке и по статусу отдельно
 
@@ -149,6 +165,7 @@ FROM visit
 GROUP BY GROUPING SETS ((training_id), (attended))
 ORDER BY training_id NULLS LAST, attended NULLS LAST;
 ```
+<img width="307" height="191" alt="" src="https://github.com/user-attachments/assets/1249840b-98cd-40b6-a7c9-c314a1404c65" />
 
 ## 6. ROLLUP
 
@@ -165,6 +182,7 @@ FROM payment
 GROUP BY ROLLUP(method)
 ORDER BY method NULLS LAST;
 ```
+<img width="391" height="121" alt="" src="https://github.com/user-attachments/assets/c3a46952-34b0-4807-b0d7-97b37baa4e55" />
 
 ### 6.2. Платежи по способам и годам с промежуточными итогами
 
@@ -179,6 +197,7 @@ FROM payment
 GROUP BY ROLLUP(method, EXTRACT(YEAR FROM payment_date))
 ORDER BY method NULLS LAST, year NULLS LAST;
 ```
+<img width="351" height="175" alt="" src="https://github.com/user-attachments/assets/ca219985-6ac4-4413-b3cd-db4d73d709e7" />
 
 ## 7. CUBE
 
@@ -195,6 +214,7 @@ FROM payment
 GROUP BY CUBE(method, client_id)
 ORDER BY method NULLS LAST, client_id NULLS LAST;
 ```
+<img width="372" height="374" alt="" src="https://github.com/user-attachments/assets/6dfc1ac9-2bac-4142-9d5f-78eb8726ca67" />
 
 ### 7.2. Посещения: тренировка × статус
 
@@ -209,6 +229,7 @@ FROM visit
 GROUP BY CUBE(training_id, attended)
 ORDER BY training_id NULLS LAST, attended NULLS LAST;
 ```
+<img width="332" height="341" alt="" src="https://github.com/user-attachments/assets/1aaa20c7-20da-459a-a984-475af31d5d94" />
 
 ## 8. Полный порядок: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY
 
@@ -227,6 +248,7 @@ GROUP BY method
 HAVING SUM(amount) > 5000
 ORDER BY total_amount DESC;
 ```
+<img width="413" height="94" alt="" src="https://github.com/user-attachments/assets/8f1f4906-2ab4-40b0-83ea-797f6a243d9f" />
 
 ### 8.2. Посещения по тренировкам
 
