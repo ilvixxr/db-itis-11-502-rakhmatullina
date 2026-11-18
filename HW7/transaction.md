@@ -350,6 +350,8 @@ COMMIT;
 ```sql
 SELECT client_id, phone FROM client WHERE client_id IN (1, 2);
 ```
+<img width="601" height="529" alt="Снимок экрана — 2026-11-18 в 13 31 35" src="https://github.com/user-attachments/assets/79389a95-0a7f-4da4-9c63-921fa058f6ed" />
+
 *Вывод:* Изменения до `SAVEPOINT` сохранились (телефон клиента 1), а после — откатились (телефон клиента 2 остался старым).
 
 ---
@@ -372,6 +374,8 @@ COMMIT;
 ```sql
 SELECT membership_id, price FROM membership WHERE membership_id IN (1, 2, 3);
 ```
+<img width="274" height="114" alt="Снимок экрана — 2026-11-18 в 13 32 41" src="https://github.com/user-attachments/assets/e81450f8-ac4d-433b-b592-276eedca4f67" />
+
 *Вывод:* Цена 1-го абонемента изменилась. Цены 2-го и 3-го остались прежними, так как откат к `sp1` отменил вторую точку и все изменения после неё.
 
 ---
