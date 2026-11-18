@@ -1,4 +1,4 @@
-# HW7 — Транзакции и уровни изоляции
+<img width="599" height="467" alt="Снимок экрана — 2026-11-18 в 12 37 19" src="https://github.com/user-attachments/assets/3e8250a6-a6a5-4581-a45d-11306fbe13da" /># HW7 — Транзакции и уровни изоляции
 
 ## 1. Базовые операции с транзакциями
 
@@ -19,6 +19,8 @@ VALUES (
 
 COMMIT;
 ```
+<img width="1447" height="1080" alt="Снимок экрана — 2026-11-17 в 13 01 35" src="https://github.com/user-attachments/assets/d104c7db-4740-4de0-90da-ac2995df1a04" />
+
 *Вывод:* Обе операции выполнились успешно и зафиксировались (COMMIT). В базе появился новый клиент и его абонемент.
 
 ### Сценарий 1.2. Успешная транзакция: Платеж + Скидка
@@ -35,6 +37,8 @@ UPDATE membership SET discount = 5 WHERE membership_id = 1;
 
 COMMIT;
 ```
+<img width="1447" height="1080" alt="Снимок экрана — 2026-11-17 в 13 04 16" src="https://github.com/user-attachments/assets/f97fa1fc-1520-41e7-be95-7e348a6f9c9c" />
+
 *Вывод:* Транзакция зафиксирована. Платеж добавлен, скидка обновлена.
 
 ---
@@ -51,11 +55,14 @@ VALUES ('Петр', 'Отмененный', '+7-999-222-22-22');
 
 ROLLBACK;
 ```
+<img width="1447" height="1080" alt="Снимок экрана — 2026-11-17 в 13 05 01" src="https://github.com/user-attachments/assets/4b61ccef-b042-4090-861c-28eb0aad9946" />
 
 **Проверка:**
 ```sql
 SELECT * FROM client WHERE last_name = 'Отмененный';
 ```
+<img width="1447" height="1080" alt="Снимок экрана — 2026-11-17 в 13 05 48" src="https://github.com/user-attachments/assets/834401fd-1199-4e0e-9c41-c66ab36af2e7" />
+
 *Вывод:* Команда `ROLLBACK` отменила вставку. Записи в таблице нет.
 
 ---
@@ -71,11 +78,14 @@ UPDATE payment SET amount = 99999.00 WHERE payment_id = 1;
 
 ROLLBACK;
 ```
+<img width="1447" height="1080" alt="Снимок экрана — 2026-11-17 в 13 06 04" src="https://github.com/user-attachments/assets/c6041033-84eb-4bcf-97b0-4c0d8167e168" />
 
 **Проверка:**
 ```sql
 SELECT payment_id, amount FROM payment WHERE payment_id = 1;
 ```
+<img width="1447" height="1080" alt="Снимок экрана — 2026-11-17 в 13 06 16" src="https://github.com/user-attachments/assets/a3ca24ec-2f1e-42fe-9716-05c7e7f6b341" />
+
 *Вывод:* Изменения суммы отменены, вернулось исходное значение.
 
 ---
@@ -94,6 +104,7 @@ SELECT 1 / 0;
 
 COMMIT;
 ```
+<img width="1447" height="1080" alt="Снимок экрана — 2026-11-17 в 13 06 30" src="https://github.com/user-attachments/assets/aa62bb44-6d55-48b8-85e6-5827a1552f94" />
 
 *Вывод:* Возникла ошибка `division by zero`. PostgreSQL автоматически прервал транзакцию, вставка клиента не сохранилась.
 
@@ -111,11 +122,14 @@ VALUES (9999, 'Годовой', '2024-05-01', '2025-05-01', 25000.00);
 
 COMMIT;
 ```
+<img width="1447" height="1080" alt="Снимок экрана — 2026-11-17 в 13 07 08" src="https://github.com/user-attachments/assets/c38f04c5-7950-44c1-9217-86598beb1488" />
 
 **Проверка:**
 ```sql
 SELECT * FROM membership WHERE client_id = 9999;
 ```
+<img width="778" height="521" alt="Снимок экрана — 2026-11-18 в 10 44 56" src="https://github.com/user-attachments/assets/2f95614b-9dfc-4890-825e-1b19e9dbee4f" />
+
 *Вывод:* Ошибка `violates foreign key constraint`. Транзакция прервана, «битая» запись не добавлена.
 
 ---
@@ -130,11 +144,15 @@ SELECT * FROM membership WHERE client_id = 9999;
 BEGIN ISOLATION LEVEL READ UNCOMMITTED;
 UPDATE membership SET price = 9999.00 WHERE membership_id = 1;
 ```
+<img width="720" height="544" alt="Снимок экрана — 2026-11-17 в 13 17 06" src="https://github.com/user-attachments/assets/17633af4-84d9-4ab6-8ed8-2abff7a4c3c6" />
+
 **Т2:** 
 ```sql
 BEGIN ISOLATION LEVEL READ UNCOMMITTED;
 SELECT price FROM membership WHERE membership_id = 1;
 ```
+<img width="519" height="585" alt="Снимок экрана — 2026-11-17 в 13 17 27" src="https://github.com/user-attachments/assets/b8a16df2-a9c2-4074-8954-0940208a1180" />
+
 *Вывод:* В PostgreSQL уровень изоляции READ UNCOMMITTED фактически работает как READ COMMITTED. Это означает, что СУБД на уровне архитектуры запрещает «грязное чтение». Транзакция Т2 не увидела измененную цену (9999.00), потому что Т1 не выполнила COMMIT. База данных защищает пользователей от чтения незафиксированных данных.
 
 ### 2.2. READ COMMITTED (Грязное чтение)
@@ -144,14 +162,17 @@ SELECT price FROM membership WHERE membership_id = 1;
 ```sql
 BEGIN ISOLATION LEVEL READ COMMITTED;
 UPDATE membership SET price = 8888.00 WHERE membership_id = 1;
-COMMIT; -- Фиксируем
+COMMIT;
 ```
+<img width="804" height="494" alt="Снимок экрана — 2026-11-18 в 12 24 03" src="https://github.com/user-attachments/assets/fdb4f6cb-a0a4-4eb6-8d6b-fd9c95102dec" />
+
 **Т2:**
 ```sql
 BEGIN ISOLATION LEVEL READ COMMITTED;
 SELECT price FROM membership WHERE membership_id = 1; -- Увидит 8888
-COMMIT;
 ```
+<img width="736" height="637" alt="Снимок экрана — 2026-11-18 в 12 24 15" src="https://github.com/user-attachments/assets/03b792c8-105c-4679-bc77-907a686d1b29" />
+
 *Вывод:* Вывод: На уровне READ COMMITTED транзакция Т2 видит только те изменения, которые были успешно зафиксированы (COMMIT) в Т1. Как только Т1 завершила транзакцию, новые данные (цена 8888.00) сразу стали доступны для чтения в Т2.
 
 ---
