@@ -8,10 +8,9 @@
 ```sql
 BEGIN;
 
--- Добавляем клиента
 INSERT INTO client (first_name, last_name, phone, email) 
 VALUES ('Иван', 'Транзакционный', '+7-999-111-11-11', 'trans1@mail.ru');
--- Оформляем ему абонемент
+
 INSERT INTO membership (client_id, type, start_date, end_date, price) 
 VALUES (
     (SELECT MAX(client_id) FROM client), 
@@ -28,10 +27,10 @@ COMMIT;
 **Запрос:**
 ```sql
 BEGIN;
--- Добавляем запись о платеже
+
 INSERT INTO payment (membership_id, client_id, payment_date, amount, method) 
 VALUES (1, 1, CURRENT_DATE, 3000.00, 'card');
--- Даем скидку 5% на следующий абонемент (обновляем поле discount)
+
 UPDATE membership SET discount = 5 WHERE membership_id = 1;
 
 COMMIT;
