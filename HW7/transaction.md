@@ -198,7 +198,6 @@ COMMIT;
 **Т1:**
 ```sql
 SELECT price FROM membership WHERE membership_id = 1;
-COMMIT;
 ```
 <img width="794" height="665" alt="Снимок экрана — 2026-11-18 в 12 27 01" src="https://github.com/user-attachments/assets/82172e1f-746d-4577-a3a0-00e26488981b" />
 
@@ -227,7 +226,6 @@ COMMIT;
 **Т1:**
 ```sql
 SELECT price FROM membership WHERE membership_id = 1;
-COMMIT;
 ```
 <img width="685" height="570" alt="Снимок экрана — 2026-11-18 в 12 37 39" src="https://github.com/user-attachments/assets/c13f36d8-cb69-4e60-9ca3-0cce5372a58f" />
 
@@ -257,7 +255,6 @@ COMMIT;
 **Т1:**
 ```sql
 SELECT COUNT(*) FROM membership WHERE client_id = 1;
-COMMIT;
 ```
 <img width="592" height="548" alt="Снимок экрана — 2026-11-18 в 12 39 52" src="https://github.com/user-attachments/assets/4de7541b-104f-4bab-b106-65efe07e04e4" />
 
