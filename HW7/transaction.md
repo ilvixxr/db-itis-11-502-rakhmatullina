@@ -142,14 +142,14 @@ SELECT * FROM membership WHERE client_id = 9999;
 **Т1:** 
 ```sql
 BEGIN ISOLATION LEVEL READ UNCOMMITTED;
-UPDATE membership SET price = 9999.00 WHERE membership_id = 1;
+UPDATE membership SET price = 9999.00 WHERE membership_id = 9;
 ```
 <img width="720" height="544" alt="Снимок экрана — 2026-11-17 в 13 17 06" src="https://github.com/user-attachments/assets/17633af4-84d9-4ab6-8ed8-2abff7a4c3c6" />
 
 **Т2:** 
 ```sql
 BEGIN ISOLATION LEVEL READ UNCOMMITTED;
-SELECT price FROM membership WHERE membership_id = 1;
+SELECT price FROM membership WHERE membership_id = 9;
 ```
 <img width="519" height="585" alt="Снимок экрана — 2026-11-17 в 13 17 27" src="https://github.com/user-attachments/assets/b8a16df2-a9c2-4074-8954-0940208a1180" />
 
@@ -169,7 +169,7 @@ COMMIT;
 **Т2:**
 ```sql
 BEGIN ISOLATION LEVEL READ COMMITTED;
-SELECT price FROM membership WHERE membership_id = 1; -- Увидит 8888
+SELECT price FROM membership WHERE membership_id = 1;
 ```
 <img width="736" height="637" alt="Снимок экрана — 2026-11-18 в 12 24 15" src="https://github.com/user-attachments/assets/03b792c8-105c-4679-bc77-907a686d1b29" />
 
@@ -183,7 +183,7 @@ SELECT price FROM membership WHERE membership_id = 1; -- Увидит 8888
 **Т1:**
 ```sql
 BEGIN ISOLATION LEVEL READ COMMITTED;
-SELECT price FROM membership WHERE membership_id = 1; -- (1-е чтение)
+SELECT price FROM membership WHERE membership_id = 1;
 ```
 <img width="743" height="613" alt="Снимок экрана — 2026-11-18 в 12 26 29" src="https://github.com/user-attachments/assets/1a673c96-7a77-4f07-8c8e-ab70a67f151a" />
 
@@ -197,7 +197,7 @@ COMMIT;
 
 **Т1:**
 ```sql
-SELECT price FROM membership WHERE membership_id = 1; -- (2-е чтение, увидит 7777)
+SELECT price FROM membership WHERE membership_id = 1;
 COMMIT;
 ```
 <img width="794" height="665" alt="Снимок экрана — 2026-11-18 в 12 27 01" src="https://github.com/user-attachments/assets/82172e1f-746d-4577-a3a0-00e26488981b" />
@@ -212,7 +212,7 @@ COMMIT;
 **Т1:**
 ```sql
 BEGIN ISOLATION LEVEL REPEATABLE READ;
-SELECT price FROM membership WHERE membership_id = 1; -- (1-е чтение)
+SELECT price FROM membership WHERE membership_id = 1;
 ```
 <img width="688" height="543" alt="Снимок экрана — 2026-11-18 в 12 36 20" src="https://github.com/user-attachments/assets/7de8156b-c15e-4b0c-97ea-67ba4320f052" />
 
@@ -226,7 +226,7 @@ COMMIT;
 
 **Т1:**
 ```sql
-SELECT price FROM membership WHERE membership_id = 1; -- (2-е чтение, цена останется прежней!)
+SELECT price FROM membership WHERE membership_id = 1;
 COMMIT;
 ```
 <img width="685" height="570" alt="Снимок экрана — 2026-11-18 в 12 37 39" src="https://github.com/user-attachments/assets/c13f36d8-cb69-4e60-9ca3-0cce5372a58f" />
@@ -241,7 +241,7 @@ COMMIT;
 **Т1:**
 ```sql
 BEGIN ISOLATION LEVEL REPEATABLE READ;
-SELECT COUNT(*) FROM membership WHERE client_id = 1; -- было 3
+SELECT COUNT(*) FROM membership WHERE client_id = 1;
 ```
 <img width="599" height="550" alt="Снимок экрана — 2026-11-18 в 12 38 40" src="https://github.com/user-attachments/assets/55ba0b01-4b8f-4495-856e-9e24850e2c8b" />
 
@@ -256,7 +256,7 @@ COMMIT;
 
 **Т1:**
 ```sql
-SELECT COUNT(*) FROM membership WHERE client_id = 1; -- Все равно покажет 3 (фантом не пришел)
+SELECT COUNT(*) FROM membership WHERE client_id = 1;
 COMMIT;
 ```
 <img width="592" height="548" alt="Снимок экрана — 2026-11-18 в 12 39 52" src="https://github.com/user-attachments/assets/4de7541b-104f-4bab-b106-65efe07e04e4" />
@@ -343,7 +343,7 @@ BEGIN;
 UPDATE client SET phone = '+7-111-111-11-11' WHERE client_id = 1;
 SAVEPOINT my_sp;
 UPDATE client SET phone = '+7-222-222-22-22' WHERE client_id = 2;
-ROLLBACK TO my_sp; -- Откат только второго изменения
+ROLLBACK TO my_sp; -- откат только второго изменения
 COMMIT;
 ```
 **Проверка:**
@@ -367,7 +367,7 @@ SAVEPOINT sp1;
 UPDATE membership SET price = 5000.00 WHERE membership_id = 2;
 SAVEPOINT sp2;
 UPDATE membership SET price = 6000.00 WHERE membership_id = 3;
-ROLLBACK TO sp1; -- Откатываем всё после первой точки
+ROLLBACK TO sp1; -- откатываем всё после первой точки
 COMMIT;
 ```
 **Проверка:**
